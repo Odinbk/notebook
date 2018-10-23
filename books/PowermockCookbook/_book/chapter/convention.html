@@ -1,0 +1,433 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Convention · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="usage.html" />
+    
+    
+    <link rel="prev" href="idea.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="idea.html">
+            
+                <a href="idea.html">
+            
+                    
+                    Powermock IDEA
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.1.2" data-path="convention.html">
+            
+                <a href="convention.html">
+            
+                    
+                    Convention
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="usage.html">
+            
+                <a href="usage.html">
+            
+                    
+                    Usage
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Convention</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="powermock-101">Powermock 101</h1>
+<h2 id="preparefortest">@PrepareForTest</h2>
+<ul>
+<li>&#x6A21;&#x62DF;&#x9759;&#x6001;&#x3001;final&#x3001;&#x79C1;&#x6709;&#x65B9;&#x6CD5;&#xFF0C;&#x9700;&#x5728;&#x6D4B;&#x8BD5;&#x7C7B;&#x4E0A;&#x6DFB;&#x52A0;&#x6CE8;&#x89E3;@PrepareForTest</li>
+<li>&#x4E0D;&#x53EF;&#x4EE5;&#x52A0;&#x5728;Method&#x4E0A;&#x9762;</li>
+<li><p>&#x4EE3;&#x7801;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-meta">@PrepareForTest</span>({NumericService.class, EventCenterService.class, BagService.class, DiffUtil.class})
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestBagServiceDel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractVegaTest</span> </span>{
+    ... some methods
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="beforemethod">@BeforeMethod</h2>
+<ul>
+<li>&#x4F7F;&#x7528;@BeforeMethod&#x6CE8;&#x91CA;&#x5C06;&#x5728;&#x6BCF;&#x4E2A;&#x6D4B;&#x8BD5;&#x65B9;&#x6CD5;&#x4E4B;&#x524D;&#x8FD0;&#x884C;&#x7684;&#x65B9;&#x6CD5;</li>
+<li><p>&#x5BF9;&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x3001;&#x79C1;&#x6709;&#x65B9;&#x6CD5;&#x8FDB;&#x884C;Mock</p>
+<pre><code class="lang-java">  PowerMockito.mockStatic(Class)
+</code></pre>
+</li>
+<li><p>&#x5BF9;final&#x7C7B;&#x578B;&#x65B9;&#x6CD5;&#x8FDB;&#x884C;Mock</p>
+<pre><code class="lang-java">PowerMockito.mock(Class)
+</code></pre>
+</li>
+<li><p>&#x4EC5;&#x5BF9;&#x7C7B;&#x4E2D;&#x7684;&#x90E8;&#x5206;&#x65B9;&#x6CD5;&#x8FDB;&#x884C;Mock</p>
+<pre><code class="lang-java">object = PowerMockito.spy(Class)
+</code></pre>
+</li>
+<li><p>&#x4EE3;&#x7801;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-meta">@BeforeMethod</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">prepareMocking</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception </span>{
+    PowerMockito.mockStatic(NumericService.class);
+    PowerMockito.mockStatic(EventCenterService.class);
+    PowerMockito.spy(BagService.class);
+    PowerMockito.mockStatic(DiffUtil.class);
+
+    <span class="hljs-comment">// &#x521D;&#x59CB;&#x5316;Role&#x5BF9;&#x8C61;&#x65F6;&#xFF0C;&#x8C03;&#x7528;RoleGodTrial&#x5BF9;&#x8C61;&#x7684;&#x521D;&#x59CB;&#x5316;&#x65B9;&#x6CD5;&#xFF0C;&#x4E00;&#x5C42;&#x5C42;&#x8C03;&#x7528;&#x5230;TimeStrategy.needAction()&#x65B9;&#x6CD5;</span>
+    <span class="hljs-comment">// &#x4ECE;&#x800C;&#x9700;&#x8981;&#x5BF9;NumericService.getNumericById(Refresh.class, refreshTag)&#x8BED;&#x53E5;&#x8FDB;&#x884C;mock</span>
+    Refresh refreshConfig = <span class="hljs-keyword">new</span> Refresh() {
+        {
+            type = <span class="hljs-string">&quot;1&quot;</span>;
+            para1 = Arrays.asList(<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-string">&quot;3&quot;</span>, <span class="hljs-string">&quot;4&quot;</span>, <span class="hljs-string">&quot;5&quot;</span>, <span class="hljs-string">&quot;6&quot;</span>, <span class="hljs-string">&quot;7&quot;</span>);
+            para2 = Arrays.asList(<span class="hljs-string">&quot;5&quot;</span>);
+        }
+    };
+    PowerMockito.when(NumericService.class, <span class="hljs-string">&quot;getNumericById&quot;</span>, ArgumentMatchers.eq(Refresh.class), anyString()).thenReturn(refreshConfig);
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="preparemockingformethod">prepareMockingForMethod()</h2>
+<ul>
+<li>&#x4E0D;&#x662F;&#x6240;&#x6709;&#x7684;&#x6D4B;&#x8BD5;&#x65B9;&#x6CD5;&#x90FD;&#x9700;&#x8981;mock&#x8DB3;&#x591F;&#x591A;&#x7684;&#x63A5;&#x53E3;&#xFF0C;&#x53EF;&#x80FD;&#x5B58;&#x5728;&#x6F5C;&#x5728;&#x7684;&#x526F;&#x4F5C;&#x7528;&#x3002;</li>
+<li>&#x5B9A;&#x4E49;&#x79C1;&#x6709;&#x65B9;&#x6CD5;prepareMethodFor<em>Method</em>&#xFF0C;&#x7528;&#x4E8E;&#x4E3A;&#x5355;&#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x65B9;&#x6CD5;mock&#x76F8;&#x5E94;&#x7684;&#x63A5;&#x53E3;&#x3002;</li>
+<li><p>&#x4EE3;&#x7801;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">prepareMockingForGetItemListBySubType</span><span class="hljs-params">(String tag)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+
+    Item item = <span class="hljs-keyword">new</span> Item() {
+        {
+            subType = <span class="hljs-number">111</span>;
+        }
+    };
+
+    <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;310014&quot;</span>.equals(tag)) {
+        PowerMockito.when(NumericService.class, <span class="hljs-string">&quot;getNumericById&quot;</span>, ArgumentMatchers.eq(Item.class), anyString()).thenReturn(item);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="dataprovider">@DataProvider</h2>
+<ul>
+<li>&#x4F7F;&#x7528;@DataProvider&#x6807;&#x8BB0;&#x4E00;&#x79CD;&#x65B9;&#x6CD5;&#x6765;&#x63D0;&#x4F9B;&#x6D4B;&#x8BD5;&#x65B9;&#x6CD5;&#x7684;&#x6570;&#x636E;[&#x63A8;&#x8350;&#x4F7F;&#x7528;]</li>
+<li>&#x76F4;&#x63A5;&#x5BF9;&#x53C2;&#x6570;&#x8FDB;&#x884C;&#x8FD4;&#x56DE;&#xFF0C;return this.build2DArray( ... )&#xFF1B;</li>
+<li><p>&#x4EE3;&#x7801;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-meta">@DataProvider</span>
+<span class="hljs-keyword">public</span> Object[][] getItemListBySubType_HappyPath_DataProvider() {
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.build2DArray(
+            <span class="hljs-keyword">this</span>.buildArray(<span class="hljs-number">111</span>, <span class="hljs-string">&quot;310014&quot;</span>, <span class="hljs-number">1</span>, <span class="hljs-number">111</span>, <span class="hljs-keyword">true</span>),
+            <span class="hljs-keyword">this</span>.buildArray(<span class="hljs-number">111</span>, <span class="hljs-string">&quot;310001&quot;</span>, <span class="hljs-number">1</span>, <span class="hljs-number">101</span>, <span class="hljs-keyword">false</span>)
+    );
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="test">@Test</h2>
+<ul>
+<li>&#x4F7F;&#x7528;@Test&#x5C06;&#x7C7B;&#x6216;&#x65B9;&#x6CD5;&#x6807;&#x8BB0;&#x4E3A;&#x6D4B;&#x8BD5;&#x7684;&#x4E00;&#x90E8;&#x5206;&#x3002;</li>
+<li>@Test&#x65B9;&#x6CD5;&#x547D;&#x540D;&#x53C2;&#x8003;&#xFF1A;getItemListBySubType<em>HappyPath()&#x3001;getItemListBySubType</em><a href="https://www.jianshu.com/p/e7fb0c10d143" target="_blank">SadPath()</a></li>
+<li><p>&#x4EE3;&#x7801;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Test</span>(dataProvider = <span class="hljs-string">&quot;getItemListBySubType_HappyPath_DataProvider&quot;</span>)
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">getItemListBySubType_HappyPath</span><span class="hljs-params">(<span class="hljs-keyword">int</span> subType, String tag1, <span class="hljs-keyword">int</span> count1, <span class="hljs-keyword">int</span> subType1, <span class="hljs-keyword">boolean</span> isAddItem1)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+    List&lt;BagItem&gt; result = Lists.newArrayList();
+    List&lt;BagItem&gt; ret = BagService.getItemListBySubType(role, subType);
+    assertEquals(ret, result);
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="mock&#x65B9;&#x6CD5;">Mock&#x65B9;&#x6CD5;</h3>
+<ul>
+<li><p>&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;doReturn(..)when(..)&#xFF0C;&#x4E0D;&#x4F1A;&#x8C03;&#x7528;&#x771F;&#x5B9E;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x53C2;&#x8003;<a href="https://www.cnblogs.com/lanqi/p/7865163.html" target="_blank">thenReturn()&#x4E0E;doReturn()&#x7684;&#x533A;&#x522B;</a></p>
+</li>
+<li><p>&#x5BF9;void()&#x65B9;&#x6CD5;&#x8FDB;&#x884C;Mock</p>
+<pre><code class="lang-java">PowerMockito.doNothing().when(Class, <span class="hljs-string">&quot;methodName&quot;</span>, params);
+</code></pre>
+</li>
+<li><p>&#x5BF9;&#x8FD4;&#x56DE;&#x503C;&#x975E;&#x7A7A;&#x7684;&#x65B9;&#x6CD5;&#x8FDB;&#x884C;Mock&#xFF0C;&#x9700;&#x8981;&#x8FD4;&#x56DE;&#x503C;</p>
+<pre><code class="lang-java">PowerMockito.doReturn(value).when(object, <span class="hljs-string">&quot;fieldName&quot;</span>, params);
+</code></pre>
+</li>
+<li><p>&#x5BF9;&#x8FD4;&#x56DE;&#x503C;&#x975E;&#x7A7A;&#x7684;&#x65B9;&#x6CD5;&#x8FDB;&#x884C;Mock&#xFF0C;&#x65E0;&#x9700;&#x8FD4;&#x56DE;&#x503C;</p>
+<pre><code class="lang-java">  PowerMockito.doReturn(<span class="hljs-keyword">null</span>).when(object, <span class="hljs-string">&quot;fieldName&quot;</span>, params);
+</code></pre>
+</li>
+<li><p>&#x6A21;&#x7CCA;&#x5339;&#x914D;</p>
+<ul>
+<li>&#x6D4B;&#x8BD5;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#x65F6;&#xFF0C;&#x53EF;&#x80FD;&#x4E0D;&#x60F3;&#x4F20;&#x5165;&#x7CBE;&#x786E;&#x7684;params&#x503C;&#xFF0C;&#x8FD9;&#x65F6;&#x5019;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;Mockito.anyInt()&#xFF0C;anyString()&#xFF0C;any(Class)&#x7B49;</li>
+<li>&#x4E0D;&#x53EF;&#x4E0E;&#x7CBE;&#x786E;&#x5339;&#x914D;&#x6DF7;&#x7528;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x8C03;&#x7528;&#x65B9;&#x6CD5;">&#x8C03;&#x7528;&#x65B9;&#x6CD5;</h3>
+<ul>
+<li><p>&#x8C03;&#x7528;&#x79C1;&#x6709;&#x65B9;&#x6CD5;</p>
+<pre><code class="lang-java">  Whitebox.invokeMethod(object, <span class="hljs-string">&quot;methodName&quot;</span>, params)
+</code></pre>
+</li>
+<li><p>&#x8C03;&#x7528;&#x79C1;&#x6709;&#x9759;&#x6001;&#x65B9;&#x6CD5;</p>
+<pre><code class="lang-java">  Whitebox.invokeMethod(Class, <span class="hljs-string">&quot;methodName&quot;</span>, params)
+</code></pre>
+</li>
+<li><p>&#x8BBE;&#x7F6E;&#x7C7B;&#x7684;field</p>
+<pre><code class="lang-java">  Whitebox.setInternalState(Class, <span class="hljs-string">&quot;fieldName&quot;</span>, value)
+</code></pre>
+</li>
+<li><p>&#x8BBE;&#x7F6E;&#x5BF9;&#x8C61;&#x7684;field</p>
+<pre><code class="lang-java">  Whitebox.setInternalState(object, <span class="hljs-string">&quot;fieldName&quot;</span>, value)
+</code></pre>
+</li>
+</ul>
+<h3 id="&#x9A8C;&#x8BC1;&#x65B9;&#x6CD5;&#x8C03;&#x7528;">&#x9A8C;&#x8BC1;&#x65B9;&#x6CD5;&#x8C03;&#x7528;</h3>
+<ul>
+<li><p>&#x9A8C;&#x8BC1;&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x8C03;&#x7528;</p>
+<pre><code class="lang-java">  PowerMockito.verifyStatic(Class);
+  Class.method(params);
+</code></pre>
+</li>
+<li><p>&#x9A8C;&#x8BC1;&#x975E;&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x8C03;&#x7528;</p>
+<pre><code class="lang-java">  PowerMockito.verifyPrivate(object);
+  object.method(params);
+</code></pre>
+</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="idea.html" class="navigation navigation-prev " aria-label="Previous page: Powermock IDEA">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="usage.html" class="navigation navigation-next " aria-label="Next page: Usage">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Convention","level":"1.1.2","depth":2,"next":{"title":"Usage","level":"1.1.3","depth":2,"path":"chapter/usage.md","ref":"chapter/usage.md","articles":[]},"previous":{"title":"Powermock IDEA","level":"1.1.1","depth":2,"path":"chapter/idea.md","ref":"chapter/idea.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter/convention.md","mtime":"2018-10-17T11:57:18.973Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-17T11:57:34.528Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
