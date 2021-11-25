@@ -1,0 +1,212 @@
+{
+  "job_id": 2434,
+  "target": {
+    "client": {
+      "force_logout": true,
+      "installation_package": { "dk_android": { "full": 1, "mini": 1} },
+      "create_update_package": true
+    },
+    "server": {
+      "compatible_client_version": ["c-4347"],
+      "minimal_upgradable_client_version": "c-4182"
+    }
+  },
+  "release": "production",
+  "game_name": "dk",
+  "walle_url": "https://walle4.youle.game",
+  "build_type": 3,
+  "deployment": {
+    "id": 3,
+    "name": "dev",
+    "cdn_url": "https://dk-client-update.youle.game/dev/",
+    "game_id": 1,
+    "meta_dir": "dev",
+    "is_active": true,
+    "nocdn_url": "https://dk-client-update.youle.game/dev/",
+    "cluster_id": 36,
+    "global_url": "https://dk-dev1.youle.game:18800",
+    "platform_ids": [70],
+    "vms_server_url": "https://dk-dev1.youle.game:8800",
+    "is_store_review": false,
+    "ERROR_REPORT_URL": "https://log-data.topjoy.com/sync_data",
+    "bound_cluster_id": null,
+    "notice_server_url": "https://dk-dev1.youle.game:8804",
+    "bound_cluster_name": null
+  },
+  "build_version": {
+    "client_modules": [
+      {
+        "tag": "DKClient_prerelease#Assets#WorkAssets#44880",
+        "name": "assetbundle",
+        "repo": null
+      },
+      { "tag": "Numeric#prerelease#44888", "name": "dataconfig", "repo": null },
+      {
+        "tag": "DKClient_prerelease#Assets#Scripts#44008",
+        "name": "frontend",
+        "repo": null
+      },
+      {
+        "tag": "prerelease.200102.01",
+        "name": "luascript",
+        "repo": "git@git.youle.game:dk/dk-client-group/client-lua.git"
+      }
+    ],
+    "client_version": "c-4347",
+    "server_modules": [
+      {
+        "tag": "master_majia.200107.02",
+        "name": "battleserver",
+        "repo": "git@git.youle.game:dk/dk-server-group/dk-server.git"
+      },
+      { "tag": "Numeric#prerelease#44888", "name": "dataconfig", "repo": null },
+      {
+        "tag": "master_majia.200107.02",
+        "name": "gameserver",
+        "repo": "git@git.youle.game:dk/dk-server-group/dk-server.git"
+      },
+      {
+        "tag": "prerelease.200102.01",
+        "name": "global",
+        "repo": "git@git.youle.game:dk/dk-server-group/global.git"
+      },
+      {
+        "tag": "prerelease.200102.01",
+        "name": "luascript",
+        "repo": "git@git.youle.game:dk/dk-client-group/client-lua.git"
+      },
+      {
+        "tag": "master.200102.01",
+        "name": "notice",
+        "repo": "git@git.youle.game:dk/dk-server-group/notice.git"
+      },
+      {
+        "tag": "master.191218.01",
+        "name": "pipeline-meta",
+        "repo": "git@git.youle.game:dk/dk-pipeline.git"
+      },
+      {
+        "tag": "prerelease.200102.01",
+        "name": "snapshot",
+        "repo": "git@git.youle.game:dk/dk-server-group/dk-server.git"
+      },
+      {
+        "tag": "master.200102.01",
+        "name": "vms",
+        "repo": "git@git.youle.game:dk/dk-server-group/notice.git"
+      }
+    ],
+    "server_version": "s-4348",
+    "client_version_id": 4347,
+    "server_version_id": 4348
+  },
+  "upgrade_paths": [
+    {
+      "id": 2,
+      "name": "dk_android",
+      "profiles": [
+        { "frontend": "profile_android.yaml" },
+        { "assetbundle": "profile_android.yaml" },
+        { "dataconfig": "profile_all.yaml" },
+        { "luascript": "profile_all.yaml" }
+      ]
+    }
+  ],
+  "online_version": {
+    "production": {
+      "client_modules": [
+        {
+          "tag": "DKClient_prerelease#Assets#WorkAssets#44400",
+          "name": "assetbundle",
+          "repo": null
+        },
+        {
+          "tag": "Numeric#prerelease#44408",
+          "name": "dataconfig",
+          "repo": null
+        },
+        {
+          "tag": "DKClient_prerelease#Assets#Scripts#44008",
+          "name": "frontend",
+          "repo": null
+        },
+        {
+          "tag": "prerelease.191220.01",
+          "name": "luascript",
+          "repo": "git@git.youle.game:dk/dk-client-group/client-lua.git"
+        }
+      ],
+      "client_version": "c-4182",
+      "server_modules": [
+        {
+          "tag": "master.191220.01",
+          "name": "battleserver",
+          "repo": "git@git.youle.game:dk/dk-server-group/dk-server.git"
+        },
+        {
+          "tag": "Numeric#prerelease#44408",
+          "name": "dataconfig",
+          "repo": null
+        },
+        {
+          "tag": "master.191220.01",
+          "name": "gameserver",
+          "repo": "git@git.youle.game:dk/dk-server-group/dk-server.git"
+        },
+        {
+          "tag": "prerelease.191212.01",
+          "name": "global",
+          "repo": "git@git.youle.game:dk/dk-server-group/global.git"
+        },
+        {
+          "tag": "prerelease.191220.01",
+          "name": "luascript",
+          "repo": "git@git.youle.game:dk/dk-client-group/client-lua.git"
+        },
+        {
+          "tag": "master.191202.01",
+          "name": "notice",
+          "repo": "git@git.youle.game:dk/dk-server-group/notice.git"
+        },
+        {
+          "tag": "master.191218.01",
+          "name": "pipeline-meta",
+          "repo": "git@git.youle.game:dk/dk-pipeline.git"
+        },
+        {
+          "tag": "master.191220.01",
+          "name": "snapshot",
+          "repo": "git@git.youle.game:dk/dk-server-group/dk-server.git"
+        },
+        {
+          "tag": "master.191202.01",
+          "name": "vms",
+          "repo": "git@git.youle.game:dk/dk-server-group/notice.git"
+        }
+      ],
+      "server_version": "s-4183",
+      "client_version_id": 4182,
+      "server_version_id": 4183
+    }
+  },
+  "upgrade_package_info": {
+    "c-4182_c-4347": {
+      "to_version": "c-4347",
+      "from_version": "c-4182",
+      "to_module_tag": {
+        "frontend": { "tag": "DKClient_prerelease#Assets#Scripts#44008" },
+        "luascript": { "tag": "prerelease.200102.01" },
+        "dataconfig": { "tag": "Numeric#prerelease#44888" },
+        "assetbundle": { "tag": "DKClient_prerelease#Assets#WorkAssets#44880" }
+      },
+      "to_version_id": 4347,
+      "from_module_tag": {
+        "frontend": { "tag": "DKClient_prerelease#Assets#Scripts#44008" },
+        "luascript": { "tag": "prerelease.191220.01" },
+        "dataconfig": { "tag": "Numeric#prerelease#44408" },
+        "assetbundle": { "tag": "DKClient_prerelease#Assets#WorkAssets#44400" }
+      },
+      "from_version_id": 4182
+    }
+  }
+}

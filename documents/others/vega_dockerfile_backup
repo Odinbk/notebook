@@ -1,0 +1,26 @@
+FROM registry-dev.youle.game/unit_test/maven_jdk10:latest as builder
+
+VOLUME /root/.m2
+
+WORKDIR /code
+
+COPY . /code/
+
+RUN mvn -s /root/.m2/settings.xml clean compile package dependency:copy-dependencies -DJAVA_HOME_10=/docker-java-home
+
+
+FROM registry-dev.youle.game/library/oracle-jdk-10.0.1:r20180918.01 as prod
+
+ENV JAVA_HOME_10 $JAVA_HOME
+
+WORKDIR /root/
+
+COPY --from=builder /code/target target
+COPY --from=builder /code/config config
+COPY --from=builder /code/jacocoagent.jar /root/jacocoagent.jar
+COPY --from=builder /code/jacococli.jar /root/jacococli.jar
+
+EXPOSE 10101
+EXPOSE 9101
+
+ENTRYPOINT ["java", "-ms512m", "-mx512m", "-Xmn256m", "-javaagent:/root/jacocoagent.jar=includes=vega.gameserver.handler,destfile=/root/target/jacoco-it.exec", "-cp", "target/Vega-0.0.1-SNAPSHOT.jar:target/dependency/*", "-Djava.awt.headless=true", "-Dserver.type=GAME_SERVER", "-Dserver.group=yg_local", "-Dserver.home=.", "-Dlogback.configurationFile=./src/main/resources/logback.xml", "-Dlog.home=./target/log", "-Dserver.id=11",  "vega.Bootstrap"]

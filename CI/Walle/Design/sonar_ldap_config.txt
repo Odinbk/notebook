@@ -1,0 +1,12 @@
+#LDAP settings
+#admin
+sonar.security.realm=LDAP
+ldap.url=ldap://openldap.youle.game:389
+ldap.bindDn=cn=root,dc=youle,dc=com
+ldap.bindPassword=8518263
+#users
+
+ldap.user.baseDn=dc=youle,dc=com
+ldap.user.request=(objectClass=inetOrgPerson)
+ldap.user.realNameAttribute=uid
+ldap.user.emailAttribute=mail

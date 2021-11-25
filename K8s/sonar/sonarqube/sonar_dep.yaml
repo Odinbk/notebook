@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: sonar
+  labels:
+    app: sonarqube
+  name: sonarqube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarqube
+  template:
+    metadata:
+      labels:
+        app: sonarqube
+    spec:
+      containers:
+        - name: sonarqube
+          image: sonarqube:7.1
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+            limits:
+              cpu: 2000m
+              memory: 2048Mi
+          volumeMounts:
+          - mountPath: "/opt/sonarqube/conf/"
+            name: sonar-conf
+          - mountPath: "/opt/sonarqube/data/"
+            name: sonar-data
+          - mountPath: "/opt/sonarqube/extensions/"
+            name: sonar-extensions
+          env:
+          - name: "SONARQUBE_JDBC_USERNAME"
+            value: "admin"
+          - name: "SONARQUBE_JDBC_URL"
+            value: "jdbc:postgresql://postgres-cluster-ip/sonar"
+          - name: "SONARQUBE_JDBC_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: postgres
+                key: password
+          ports:
+          - containerPort: 9000
+            protocol: TCP
+      volumes:
+      - name: sonar-conf
+        persistentVolumeClaim:
+          claimName: sonar-conf
+      - name: sonar-data
+        persistentVolumeClaim:
+          claimName: sonar-data
+      - name: sonar-extensions
+        persistentVolumeClaim:
+          claimName: sonar-extensions

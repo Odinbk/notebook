@@ -1,0 +1,15 @@
+FROM mirror.youle.game/python:3.6.5-jessie
+
+WORKDIR /workspace
+
+RUN set -xe \
+    && apt-get update \
+    && apt-get install zip -y
+
+RUN wget http://luajit.org/download/LuaJIT-2.1.0-beta2.zip \
+    && unzip LuaJIT-2.1.0-beta2.zip \
+    && cd LuaJIT-2.1.0-beta2 \
+    && make
+
+
+CMD ['bash']

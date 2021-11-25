@@ -1,0 +1,13 @@
+class Response:
+    def __init__(self, status, info, data):
+        self.status = status
+        self.info = info
+        self.data = data
+
+    @staticmethod
+    def object_hook(d):
+        print(d)
+        return Response(d['status'], d['info'], d['data'])
+
+
+resp = json.loads(a, object_hook=Response.object_hook)

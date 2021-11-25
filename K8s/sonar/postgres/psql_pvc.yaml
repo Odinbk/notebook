@@ -1,0 +1,28 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: sonar
+  name: postgres-pv-volume
+  labels:
+    app: postgres
+spec:
+  storageClassName: managed-nfs-storage
+  capacity:
+    storage: 16Gi
+  accessModes:
+  - ReadWriteOnce
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: sonar
+  name: postgres-pv-claim
+  labels:
+    app: postgres
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 16Gi

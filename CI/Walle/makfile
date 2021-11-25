@@ -1,0 +1,60 @@
+project_root:=$(CURDIR)
+app_name:=vega
+
+.PHONY: help build uploadrc ding clean
+
+help:
+	@echo "help"
+	@echo "make setup       -- 准备执行CI任务以来的Python环境"
+	@echo "make build       -- 执行代码构建"
+	@echo "make uploadrc    -- 上传产出到Resource Centre并入库"
+	@echo "make clean	    -- 清理构建现场"
+	@echo "make ding	    -- 发送钉钉通知"
+
+
+# Setup
+setup:
+	( \
+		set -x; \
+		env; \
+		source ~/.bash_profile; \
+		virtualenv -p python3 Assets_env; \
+		source Assets_env/bin/activate; \
+		pip install -I --trusted-host nexus.youle.game -i http://nexus.youle.game/repository/pypi-public/simple -r _continuous_integration_delivery/requirements.txt; \
+		# 
+		cp Assets_env/config/Assets_env/lib/python3.7/config.yaml; \
+	)
+
+# Build
+build:
+	( \
+		source ~/.bash_profile; \
+		source Assets_env/bin/activate; \
+		python _continuous_integration_delivery/pipeline.py -j build; \
+	)
+
+
+# Upload package to Resource Centre
+uploadrc:
+	( \
+		source ~/.bash_profile; \
+		source Assets_env/bin/activate; \
+		python _continuous_integration_delivery/pipeline.py -j rc; \
+	)
+
+
+# IM Message
+ding:
+	( \
+		source Assets_env/bin/activate; \
+		python _continuous_integration_delivery/pipeline.py -j ding -r $(result); \
+	)
+
+
+clean:
+	( \
+		svn cleanup && svn revert . --depth=infinity; \
+		rm -rf Assets_env; \
+		rm -f docker_cmd.sh; \
+		rm -rf asset_tmp/rc_password; \
+	)

@@ -1,0 +1,208 @@
+
+import logging
+import os
+import re
+import subprocess
+import sys
+
+
+def _get_logger():
+    fh = logging.FileHandler('/var/log/post-commit.history', 'a')
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+
+    logger = logging.getLogger()
+    logger.setLevel(os.environ.get("LOG_LEVEL", "INFO"))
+    for h in logger.handlers[:]:
+        logger.removeHandler(h)
+    logger.addHandler(fh)
+
+    return logger
+
+
+def _branch_details(dirs):
+    """
+    从提交修改的目录中找出是否有匹配者分支模式的的提交。
+    保存匹配到分支名称，以及他们相对于SVN仓库项目根目录的相对路径。
+    eg: 若SVN ROOT: svn://svn.youle.game/gbf/ArtUnityTrunk,
+    则 相对路径"sub_path"为 ArtUnityTrunk.
+    :param dirs: list: 文件目录更新列表。
+    :return: {
+        'ArtUnityTrunk': 'ArtUnityTrunk',
+        'v0.10.24': 'ArtUnityBranch/Lua/v0.10.24'
+    }
+    """
+    details = {}
+    for _dir in dirs:
+        if not BRANCH_PATTERN:
+            continue
+
+        try:
+            res = re.search(BRANCH_PATTERN, _dir)
+        except re.error:
+            LOGGER.exception('正则表达式：{}错误'.format(BRANCH_PATTERN))
+            raise
+
+        if res:
+            group_dict = res.groupdict()
+            sub_path = group_dict.get('sub_path')
+            branch_name = group_dict.get('branch_name')
+            if sub_path and branch_name:
+                LOGGER.info('目录{} 成功匹配到分支规则: {}'.format(_dir, BRANCH_PATTERN))
+                details.update({branch_name: sub_path})
+
+    return details
+
+
+def _execute_command(cmd):
+    if not isinstance(cmd, (list, tuple)):
+        cmd = [cmd]
+
+    po = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, err = po.communicate()
+    if po.returncode != 0:
+        raise RuntimeError("execute command: {} failed, error: {}".format(cmd, err))
+
+    return output
+
+
+LOGGER = _get_logger()
+
+SVN_BIN = os.getenv('SvnBinPath') #  svn服务器上 svn可执行程序路径。 通过jenkins任务"env setup"配置，更新。
+SVN_LOOK = os.path.join(SVN_BIN, 'svnlook') #  svn服务器上 svnlook可执行程序路径。
+JENKINS_USER = os.getenv('JenkinsUser') #  调用Jenkins API触发任务的 API账户。 通过jenkins任务"env setup"配置，更新。
+JENKINS_ACCESS_TOKEN = os.getenv('JenkinsAccessToken') #  调用Jenkins API触发任务的 API账户。 通过jenkins任务"env setup"配置，更新。
+
+TRUNK_NAME = "master" #  模块SVN主干名称，在WallE上配置，修改。
+REPO_ADDRESS = "svn://svn.youle.game/tkw/numeric" #  模块仓库地址，在WallE上配置，修改。
+DIRS_WATCHED = "numeric/" #  CI文件变更监控目录，在WallE上配置，修改。
+BRANCH_PATTERN = "(?P<sub_path>numeric/(?P<branch_name>config.*))" #  分支匹配模式，在WallE上配置，修改。
+TRIGGER_PATTERN = ".*" #  SVN提交信息中，标记触发CI任务的匹配模式，在WallE上配置，修改。
+JENKINS_JOB_URL = "https://jenkins-ci.youle.game/job/tkw-numeric/job/__numeric-master__" # SVN 钩子回调Jenkins任务的地址，由WallE生成，传递。
+SVN_HOOK_TOKEN = "svn-post-commit-token" #  SVN 钩子回调Jenkins任务的Token标记，写死在生成Jenkins任务的模板中。
+
+
+def changed_dirs(svn_revision, project_name):
+    """
+    调用svnlook, 获取某项目，在某次提交revision中修改的文件目录列表。
+    :param svn_revision: str: svn 提交id
+    :param project_name: str: 项目名称，eg：vega，gbf，etc。
+    :return: list: 文件目录列表。
+    """
+    cmd = [SVN_LOOK, 'dirs-changed', '-r', svn_revision, project_name]
+    output = _execute_command(cmd)
+    return [line for line in output.split(os.linesep) if line]
+
+
+def commit_log(svn_revision, project_name):
+    """
+    调用svnlook, 获取某项目，在某次提交中的提交信息
+    :param svn_revision: str: svn 提交id
+    :param project_name: str: 项目名称，eg：vega，gbf，etc。
+    :return: str：svn提交信息。
+    """
+    cmd = [SVN_LOOK, 'log', project_name, '-r', svn_revision]
+    return _execute_command(cmd)
+
+
+def watched(dirs):
+    """
+    检查是否有文件目录匹配CI监听目录。
+    :param dirs: list: 文件目录列表
+    :return: bool
+    """
+    res = [_dir for _dir in dirs if re.search(DIRS_WATCHED, _dir)]
+    if not res:
+        return False
+
+    return True
+
+
+def match_trigger_pattern(log):
+    """
+    检查提交信息是否能匹配触发CI的模式标记。
+    :param log: str: svn提交信息
+    :return: bool
+    """
+    if not re.match(TRIGGER_PATTERN, log):
+        msg = "本次提交信息: {}, 不能匹配任务触发模式：{}".format(log, TRIGGER_PATTERN)
+        print(msg)
+        LOGGER.warning(msg)
+        return False
+
+    return True
+
+
+def match_branch_pattern(dirs):
+    """
+    检查svn提交文件目录列表，尝试获取目录所属分支/主干信息。
+    当匹配到多于一个分支/主干时，脚本无法判断如何构建。
+    :param dirs: list: svn 提交文件目录列表。
+    :return: bool|tuple(str: branch_name, str: sub_path)：
+    """
+    branch_details = _branch_details(dirs)
+    LOGGER.info("解析提交修改目录后，得到分支信息: {}".format(branch_details))
+
+    if not branch_details:
+        msg = "本次提交修改目录不能匹配分支模式{}, 以主干模式{}触发任务".format(BRANCH_PATTERN, TRUNK_NAME)
+        print(msg)
+        LOGGER.info(msg)
+        # 主干模式触发时，sub_path设置为于主干相同。
+        return TRUNK_NAME, TRUNK_NAME
+
+    if len(branch_details) > 1:
+        LOGGER.error("本次提交中，包含多个分支的改动，无法触发CI任务。 "
+                     "检测到匹配分支模式{}的分支名: {}。".format(BRANCH_PATTERN, branch_details))
+        return False
+
+    branch_name, sub_path = branch_details.popitem()
+    return branch_name, sub_path
+
+
+def send_request(svn_revision, branch_name, sub_path):
+    """
+    发送触发任务的请求给Jenkins
+    :param svn_revision: str: 提交revision
+    :param branch_name: str: 分支/主干名称
+    :param sub_path: str: 分支/主干相对于项目仓库根目录的路径。
+    :return: str: http_status, 成功返回201。
+    """
+    cmd = [
+        'curl',
+        '-w', "%{http_code}",
+        '-X', 'POST',
+        '-u', '{}:{}'.format(JENKINS_USER, JENKINS_ACCESS_TOKEN),
+        '{}/buildWithParameters?token={}'.format(JENKINS_JOB_URL, SVN_HOOK_TOKEN),
+        '-d', 'repo_address={}&_svn_revision={}&_svn_branch={}&_svn_sub_path={}'.format(
+            REPO_ADDRESS, svn_revision, branch_name, sub_path)
+    ]
+
+    LOGGER.info(cmd)
+    return _execute_command(cmd)
+
+
+def run(svn_revision, project_name):
+    dirs = changed_dirs(svn_revision, project_name)
+    log = commit_log(svn_revision, project_name)
+
+    if not match_trigger_pattern(log):
+        return
+
+    if not watched(dirs):
+        return
+
+    branch_name, sub_path = match_branch_pattern(dirs)
+    if not branch_name:
+        return
+
+    send_request(svn_revision, branch_name, sub_path)
+    msg = 'hook has been triggered with params -- revision: {}, svn path: {}'.format(svn_revision, project_name)
+    print(msg)
+    LOGGER.info(msg)
+
+
+if __name__ == '__main__':
+    pro_name = sys.argv[1]
+    revision = sys.argv[2]
+
+    run(revision, pro_name)
